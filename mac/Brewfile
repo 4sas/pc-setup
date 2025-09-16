@@ -1,5 +1,3 @@
-tap "homebrew/cask"
-
 cask "google-chrome"
 cask "firefox"
 cask "discord"

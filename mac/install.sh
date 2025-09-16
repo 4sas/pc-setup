@@ -2,10 +2,29 @@
 set -euo pipefail
 
 ROLE="${1:-default}"
+LOG_DIR="/var/log/pc-setup"
 
 BASE="https://raw.githubusercontent.com/4sas/pc-setup/main/mac"
 TMP_COMMON="/tmp/BREWFILE.common.$$"
 TMP_ROLE="/tmp/BREWFILE.role.$$"
+
+# 失敗時のみ Discord 通知（ログ添付、なければメッセージのみ）
+notify_discord_on_error() {
+  local rc="${1:-0}"
+  [ -z "${DISCORD_WEBHOOK:-}" ] && return 0
+  [ "$rc" -eq 0 ] && return 0
+  local host; host="$(hostname -s)"
+  local content="[FAILURE(${rc})] pc-setup macOS install.sh role=${ROLE} host=${host} (see ${LOG_DIR}/setup.log)"
+  if [ -r "${LOG_DIR}/setup.log" ]; then
+    curl -fsS -X POST \
+      -F "content=${content}" \
+      -F "file=@${LOG_DIR}/setup.log;filename=setup.log" \
+      "$DISCORD_WEBHOOK" || true
+  else
+    curl -fsS -X POST -F "content=${content}" "$DISCORD_WEBHOOK" || true
+  fi
+}
+trap 'rc=$?; notify_discord_on_error "$rc"' EXIT
 
 # リトライ（指数バックオフ）
 RETRY_MAX="${RETRY_MAX:-5}"
