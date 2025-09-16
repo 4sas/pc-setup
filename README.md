@@ -46,21 +46,21 @@ pc-setup/
 共通のみ：
 
 ```powershell
-$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
+$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='a2eca427a69c7b146e1cb467dedca29ae7c29bd1fd6886927d7bea70b55b8b67';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; powershell -ExecutionPolicy Bypass -File $f
 ```
 
 役割（engineer）を追加：
 
 ```powershell
-$env:ROLE='engineer'; $env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
+$env:ROLE='engineer'; $env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='a2eca427a69c7b146e1cb467dedca29ae7c29bd1fd6886927d7bea70b55b8b67';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; powershell -ExecutionPolicy Bypass -File $f
 ```
 
 複数ロール（例：engineer と designer を順に適用）：
 
 ```powershell
-$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
+$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='a2eca427a69c7b146e1cb467dedca29ae7c29bd1fd6886927d7bea70b55b8b67';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; @('engineer','designer')|%{ $env:ROLE=$_; powershell -ExecutionPolicy Bypass -File $f }
 ```
 
@@ -69,21 +69,21 @@ iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Wr
 共通のみ：
 
 ```bash
-DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=0c1f62f9fbeba90f4e6bbfa574e39da6ea11c1d296d7cf5148c53bd3ce7cc6ea
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && bash "$F"
 ```
 
 役割（engineer）を追加：
 
 ```bash
-ROLE=engineer DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+ROLE=engineer DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=0c1f62f9fbeba90f4e6bbfa574e39da6ea11c1d296d7cf5148c53bd3ce7cc6ea
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && bash "$F"
 ```
 
 複数ロール（例：engineer と designer を順に適用）：
 
 ```bash
-DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=0c1f62f9fbeba90f4e6bbfa574e39da6ea11c1d296d7cf5148c53bd3ce7cc6ea
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && for r in engineer designer; do ROLE="$r" bash "$F"; done
 ```
 
