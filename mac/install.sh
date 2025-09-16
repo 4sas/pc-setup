@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROLE="${1:-default}"
 
-BASE="https://raw.githubusercontent.com/<org>/pc-setup/main/mac"
+BASE="https://raw.githubusercontent.com/4sas/pc-setup/main/mac"
 TMP_COMMON="/tmp/BREWFILE.common.$$"
 TMP_ROLE="/tmp/BREWFILE.role.$$"
 
@@ -133,6 +133,12 @@ if command -v pmset >/dev/null 2>&1; then
   else
     echo "WARN: skipped setting sleep=5 (sudo password not cached)."
   fi
+fi
+
+# --- Internet Sharing を設定/起動（INTERNET_SHARING_PASSWORD があれば）
+if [ -n "${INTERNET_SHARING_PASSWORD:-}" ]; then
+  retry curl -fsSL "$BASE/internet-sharing.sh" -o /tmp/internet-sharing.sh
+  sudo bash /tmp/internet-sharing.sh "$INTERNET_SHARING_PASSWORD" || echo "WARN: internet-sharing failed"
 fi
 
 echo "macOS セットアップ完了（Role=$ROLE）"

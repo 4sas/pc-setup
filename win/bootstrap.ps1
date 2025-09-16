@@ -36,7 +36,7 @@ $role = $env:ROLE; if ([string]::IsNullOrEmpty($role)) { $role = 'default' }
 $start = Get-Date
 
 # 本体取得→実行
-$base = 'https://raw.githubusercontent.com/<org>/pc-setup/main/win'
+$base = 'https://raw.githubusercontent.com/4sas/pc-setup/main/win'
 Invoke-WithRetry { Invoke-WebRequest "$base/install.ps1" -OutFile "$env:TEMP\install.ps1" -ErrorAction Stop }
 
 & powershell -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1" -Role $role

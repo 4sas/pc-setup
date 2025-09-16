@@ -26,6 +26,7 @@ pc-setup/
 └─ mac/
    ├─ bootstrap.sh              # One-liner から読み込む小さなブートストラップ
    ├─ install.sh                # 本体（共通 Brewfile + 役割 Brewfile を適用）
+   ├─ internet-sharing.sh       # インターネット接続の共有設定
    ├─ Brewfile                  # Mac共通のインストール設定
    ├─ vendors.csv               # mac共通の“直リンク配布”リスト（任意）
    └─ roles/
@@ -68,21 +69,21 @@ iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Wr
 共通のみ：
 
 ```bash
-DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && bash "$F"
 ```
 
 役割（engineer）を追加：
 
 ```bash
-ROLE=engineer DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+ROLE=engineer DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && bash "$F"
 ```
 
 複数ロール（例：engineer と designer を順に適用）：
 
 ```bash
-DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && for r in engineer designer; do ROLE="$r" bash "$F"; done
 ```
 

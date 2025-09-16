@@ -1,6 +1,6 @@
 # 指示
 
-* スリープモードへの移行を「5分」に設定
+* macに「Karabiner-Elements」「Scroll Reverser」をインストールする記述を追加
 
 ## 前提条件
 
@@ -41,6 +41,7 @@ pc-setup/
 └─ mac/
    ├─ bootstrap.sh              # One-liner から読み込む小さなブートストラップ
    ├─ install.sh                # 本体（共通 Brewfile + 役割 Brewfile を適用）
+   ├─ internet-sharing.sh       # インターネット接続の共有設定
    ├─ Brewfile                  # Mac共通のインストール設定
    ├─ vendors.csv               # mac共通の“直リンク配布”リスト（任意）
    └─ roles/
@@ -60,21 +61,21 @@ pc-setup/
 共通のみ：
 
 ```powershell
-$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/<org>/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='PASTE_SHA256_HERE';
+$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; powershell -ExecutionPolicy Bypass -File $f
 ```
 
 役割（engineer）を追加：
 
 ```powershell
-$env:ROLE='engineer'; $env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/<org>/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='PASTE_SHA256_HERE';
+$env:ROLE='engineer'; $env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; powershell -ExecutionPolicy Bypass -File $f
 ```
 
 複数ロール（例：engineer と designer を順に適用）：
 
 ```powershell
-$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/<org>/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='PASTE_SHA256_HERE';
+$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; @('engineer','designer')|%{ $env:ROLE=$_; powershell -ExecutionPolicy Bypass -File $f }
 ```
 
@@ -83,21 +84,21 @@ iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Wr
 共通のみ：
 
 ```bash
-DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; U=https://raw.githubusercontent.com/<org>/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=PASTE_SHA256_HERE
+DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && bash "$F"
 ```
 
 役割（engineer）を追加：
 
 ```bash
-ROLE=engineer DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; U=https://raw.githubusercontent.com/<org>/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=PASTE_SHA256_HERE
+ROLE=engineer DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && bash "$F"
 ```
 
 複数ロール（例：engineer と designer を順に適用）：
 
 ```bash
-DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; U=https://raw.githubusercontent.com/<org>/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=PASTE_SHA256_HERE
+DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && for r in engineer designer; do ROLE="$r" bash "$F"; done
 ```
 
@@ -450,7 +451,7 @@ if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
 fi
 
-BASE="https://raw.githubusercontent.com/<org>/pc-setup/main/mac"
+BASE="https://raw.githubusercontent.com/4sas/pc-setup/main/mac"
 retry curl -fsSL "$BASE/install.sh" -o /tmp/install.sh
 bash /tmp/install.sh "$ROLE"
 ~~~
@@ -463,7 +464,7 @@ set -euo pipefail
 
 ROLE="${1:-default}"
 
-BASE="https://raw.githubusercontent.com/<org>/pc-setup/main/mac"
+BASE="https://raw.githubusercontent.com/4sas/pc-setup/main/mac"
 TMP_COMMON="/tmp/BREWFILE.common.$$"
 TMP_ROLE="/tmp/BREWFILE.role.$$"
 
@@ -586,7 +587,147 @@ for src in "$BASE/vendors.csv" "$BASE/roles/$ROLE/vendors.csv"; do
   fi
 done
 
+# --- Sleep to 5 minutes (non-interactive; skip if sudo password not cached)
+if command -v pmset >/dev/null 2>&1; then
+  if sudo -n true 2>/dev/null; then
+    sudo -n pmset -a sleep 5 || true
+  else
+    echo "WARN: skipped setting sleep=5 (sudo password not cached)."
+  fi
+fi
+
+# --- Internet Sharing を設定/起動（INTERNET_SHARING_PASSWORD があれば）
+if [ -n "${INTERNET_SHARING_PASSWORD:-}" ]; then
+  retry curl -fsSL "$BASE/internet-sharing.sh" -o /tmp/internet-sharing.sh
+  sudo bash /tmp/internet-sharing.sh "$INTERNET_SHARING_PASSWORD" || echo "WARN: internet-sharing failed"
+fi
+
 echo "macOS セットアップ完了（Role=$ROLE）"
+~~~
+
+## [mac/internet-sharing.sh](./mac/internet-sharing.sh)
+
+~~~bash
+#!/usr/bin/env bash
+# Internet Sharing (USB: AX88179A -> Wi-Fi) one-shot configurator
+# SSID/Channel/Security are固定。パスワードは第1引数から。
+# 依存: /usr/libexec/PlistBuddy, networksetup, launchctl, defaults
+set -euo pipefail
+
+# ---- 固定パラメータ（要件どおり） ----
+SRC_SERVICE_NAME="AX88179A"                # 共有元（USB アダプタの“サービス名”）
+SSID="k-sakanaka の MacBook Pro"           # 共有先 Wi-Fi の SSID
+CHANNEL=11                                  # 共有先 Wi-Fi のチャンネル
+SECURITY_LABEL="WPA2/WPA3 パーソナル"       # 表示用ラベル（実体は下の SecurityType を設定）
+# 実際に plist に入れる想定キー。OS差分があるため複数キーをベストエフォートで設定する
+SECURITY_TYPES=("WPA2/WPA3 Personal" "WPA2 Personal" "WPA3 Personal")
+
+# ---- 引数: パスワード ----
+if [[ $# -lt 1 ]]; then
+  echo "Usage: sudo $0 '<wifi_password>'" >&2
+  exit 2
+fi
+PASS="$1"
+if [[ ${#PASS} -lt 8 || ${#PASS} -gt 63 ]]; then
+  echo "ERROR: パスワードは 8〜63 文字の ASCII を推奨します。" >&2
+  exit 2
+fi
+
+# ---- root 必須 ----
+if [[ $EUID -ne 0 ]]; then
+  echo "Please run as root (use: sudo $0 '<wifi_password>')" >&2
+  exit 1
+fi
+
+# ---- 小道具 ----
+PLIST_NAT="/Library/Preferences/SystemConfiguration/com.apple.nat.plist"
+PREFS="/Library/Preferences/SystemConfiguration/preferences.plist"
+PB="/usr/libexec/PlistBuddy"
+
+pb_set() { # path key type value
+  local path="$1" key="$2" type="$3" val="$4"
+  "$PB" -c "Set ${path}:${key} ${val}" "$PLIST_NAT" 2>/dev/null || \
+  "$PB" -c "Add ${path}:${key} ${type} ${val}" "$PLIST_NAT"
+}
+
+pb_ensure_dict() { # path
+  local path="$1"
+  "$PB" -c "Print ${path}" "$PLIST_NAT" >/dev/null 2>&1 || \
+  "$PB" -c "Add ${path} dict" "$PLIST_NAT"
+}
+
+# ---- Wi-Fi サービス名（ローカライズ差対応） ----
+WIFI_SERVICE="$(networksetup -listallnetworkservices 2>/dev/null \
+  | tail -n +2 \
+  | grep -E '^(Wi[--–]?Fi|AirPort)$' | head -n1 || true)"
+# Wi-Fi デバイス名（en0 等）
+WIFI_DEV="$(networksetup -listallhardwareports 2>/dev/null \
+  | awk '/^Hardware Port: Wi-Fi$/{getline; if($1=="Device:") print $2}' | head -n1)"
+
+# ---- 共有元（AX88179A）の Service UUID を取得 ----
+# preferences.plist の NetworkServices から “UserDefinedName: AX88179A” を持つ UUID を探す
+SRC_SERVICE_UUID="$(
+  $PB -c "Print :NetworkServices" "$PREFS" 2>/dev/null \
+  | awk -v RS= -v name="$SRC_SERVICE_NAME" '
+      $0 ~ name && match($0, /([0-9A-Fa-f-]{36})\s=\s\{/){ print substr($0,RSTART,RLENGTH-3) ; exit }' \
+  | head -n1
+)"
+if [[ -z "${SRC_SERVICE_UUID:-}" ]]; then
+  echo "ERROR: Network Service '${SRC_SERVICE_NAME}' が見つかりません。" >&2
+  exit 1
+fi
+
+# ---- いったん Internet Sharing を停止 ----
+IS_PLIST="/System/Library/LaunchDaemons/com.apple.InternetSharing.plist"
+# 新 launchctl（bootout/bootstrap）と旧（unload/load）の両対応
+launchctl bootout system "$IS_PLIST" >/dev/null 2>&1 || true
+launchctl unload -w "$IS_PLIST" >/dev/null 2>&1 || true
+
+# ---- NAT 設定（com.apple.nat.plist）を作成/更新 ----
+# NAT.Enabled=0 （編集中は無効）
+defaults write /Library/Preferences/SystemConfiguration/com.apple.nat NAT -dict Enabled -int 0
+
+# 必要な辞書を確保
+pb_ensure_dict ":NAT"
+pb_ensure_dict ":NAT:AirPort"
+
+# 共有元（PrimaryService = AX88179A の Service UUID）
+# 可能なら両方（PrimaryService / PrimaryInterface）を設定
+defaults write /Library/Preferences/SystemConfiguration/com.apple.nat PrimaryService -string "$SRC_SERVICE_UUID" 2>/dev/null || true
+
+# 共有先 Wi-Fi のオプション（ベストエフォートで複数キーを設定）
+pb_set ":NAT:AirPort" "AllowNetCreation" integer 1
+pb_set ":NAT:AirPort" "SSID" string "$SSID"
+pb_set ":NAT:AirPort" "Channel" integer "$CHANNEL"
+# パスワード（複数キー候補）
+for k in Password PSK WPA2PSK; do
+  pb_set ":NAT:AirPort" "$k" string "$PASS"
+done
+# セキュリティ種別（複数候補を順に書く）
+for s in "${SECURITY_TYPES[@]}"; do
+  pb_set ":NAT:AirPort" "SecurityType" string "$s"
+done
+
+# 共有サブネットは既定（192.168.2.0/24）を使用。必要なら以下を解放し調整:
+# defaults write /Library/Preferences/SystemConfiguration/com.apple.nat NAT -dict-add SharingNetworkNumberStart "192.168.2.0"
+# defaults write /Library/Preferences/SystemConfiguration/com.apple.nat NAT -dict-add SharingNetworkMask "255.255.255.0"
+
+# ---- Wi-Fi を有効化（あれば）----
+if [[ -n "${WIFI_SERVICE:-}" ]]; then
+  networksetup -setairportpower "$WIFI_SERVICE" on || true
+elif [[ -n "${WIFI_DEV:-}" ]]; then
+  # 古い networksetup はサービス名必須だが、念のため dev でも試行
+  networksetup -setairportpower "$WIFI_DEV" on || true
+fi
+
+# ---- Internet Sharing を有効化 ----
+# NAT.Enabled=1
+defaults write /Library/Preferences/SystemConfiguration/com.apple.nat NAT -dict Enabled -int 1
+
+# Daemon 起動（新旧 launchctl 両対応）
+launchctl bootstrap system "$IS_PLIST" 2>/dev/null || launchctl load -w "$IS_PLIST"
+
+echo "Internet Sharing: ${SRC_SERVICE_NAME} → Wi-Fi (${SSID}) を起動しました。"
 ~~~
 
 ## [mac/Brewfile](./mac/Brewfile)
@@ -690,7 +831,7 @@ $role = $env:ROLE; if ([string]::IsNullOrEmpty($role)) { $role = 'default' }
 $start = Get-Date
 
 # 本体取得→実行
-$base = 'https://raw.githubusercontent.com/<org>/pc-setup/main/win'
+$base = 'https://raw.githubusercontent.com/4sas/pc-setup/main/win'
 Invoke-WithRetry { Invoke-WebRequest "$base/install.ps1" -OutFile "$env:TEMP\install.ps1" -ErrorAction Stop }
 
 & powershell -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1" -Role $role
@@ -743,7 +884,7 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 }
 
 # 取得先
-$raw='https://raw.githubusercontent.com/<org>/pc-setup/main/win'
+$raw='https://raw.githubusercontent.com/4sas/pc-setup/main/win'
 $temp=$env:TEMP
 
 # 共通 / 役割 packages.json 取得
@@ -821,6 +962,18 @@ try { Invoke-WithRetry { Invoke-WebRequest "$raw/vendors.csv" -OutFile $commonCs
 try { Invoke-WithRetry { Invoke-WebRequest "$raw/roles/$Role/vendors.csv" -OutFile $roleCsv -UseBasicParsing -ErrorAction Stop } } catch { }
 Install-VendorCsv $commonCsv
 Install-VendorCsv $roleCsv
+
+# --- Sleep to 5 minutes (AC/DC) on current power scheme
+foreach ($args in @(
+  @('/change','standby-timeout-ac','5'),
+  @('/change','standby-timeout-dc','5')
+)) {
+  try {
+    Invoke-ExternalWithRetry 'powercfg' $args
+  } catch {
+    Write-Warning "Failed to set sleep timeout ($($args -join ' ')): $($_.Exception.Message)"
+  }
+}
 
 Write-Host "Windows セットアップ完了（Role=$Role）" -ForegroundColor Green
 ~~~

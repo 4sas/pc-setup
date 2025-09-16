@@ -47,6 +47,6 @@ if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
 fi
 
-BASE="https://raw.githubusercontent.com/<org>/pc-setup/main/mac"
+BASE="https://raw.githubusercontent.com/4sas/pc-setup/main/mac"
 retry curl -fsSL "$BASE/install.sh" -o /tmp/install.sh
 bash /tmp/install.sh "$ROLE"

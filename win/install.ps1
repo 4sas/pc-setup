@@ -24,7 +24,7 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 }
 
 # 取得先
-$raw='https://raw.githubusercontent.com/<org>/pc-setup/main/win'
+$raw='https://raw.githubusercontent.com/4sas/pc-setup/main/win'
 $temp=$env:TEMP
 
 # 共通 / 役割 packages.json 取得
