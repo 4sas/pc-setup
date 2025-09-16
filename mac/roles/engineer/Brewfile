@@ -1,0 +1,11 @@
+# 最新のPython
+brew "python"
+# 現行のNode.js（LTS運用なら version 固定を検討）
+brew "node"
+cask "visual-studio-code"
+cask "sourcetree"
+cask "docker"
+
+# App Store CLI / Xcode
+brew "mas"
+mas "Xcode", id: 497799835

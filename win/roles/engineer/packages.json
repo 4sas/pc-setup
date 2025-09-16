@@ -1,0 +1,24 @@
+{
+  "$schema": "https://aka.ms/winget-packages.schema.2.0.json",
+  "Sources": [
+    {
+      "Packages": [
+        {
+          "PackageIdentifier": "Microsoft.VisualStudioCode"
+        },
+        {
+          "PackageIdentifier": "Atlassian.Sourcetree"
+        },
+        {
+          "PackageIdentifier": "Python.Python.3.13"
+        },
+        {
+          "PackageIdentifier": "OpenJS.NodeJS.LTS"
+        },
+        {
+          "PackageIdentifier": "Docker.DockerDesktop"
+        }
+      ]
+    }
+  ]
+}

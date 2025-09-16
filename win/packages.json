@@ -1,0 +1,33 @@
+{
+  "$schema": "https://aka.ms/winget-packages.schema.2.0.json",
+  "Sources": [
+    {
+      "Packages": [
+        {
+          "PackageIdentifier": "Google.Chrome"
+        },
+        {
+          "PackageIdentifier": "Mozilla.Firefox"
+        },
+        {
+          "PackageIdentifier": "Discord.Discord"
+        },
+        {
+          "PackageIdentifier": "Anthropic.Claude"
+        },
+        {
+          "PackageIdentifier": "Zoom.Zoom"
+        },
+        {
+          "PackageIdentifier": "TheDocumentFoundation.LibreOffice"
+        },
+        {
+          "PackageIdentifier": "RARLab.WinRAR"
+        },
+        {
+          "PackageIdentifier": "sakura-editor.sakura"
+        }
+      ]
+    }
+  ]
+}

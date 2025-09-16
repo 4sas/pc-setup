@@ -1,0 +1,57 @@
+name: Update one-liner SHA-256 in README
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'win/bootstrap.ps1'
+      - 'mac/bootstrap.sh'
+      - 'README.md'
+      - '.github/workflows/update-readme-hash.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-readme-hash
+  cancel-in-progress: true
+
+jobs:
+  update-hash:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute SHA-256
+        id: sha
+        run: |
+          WIN_SHA=$(sha256sum win/bootstrap.ps1 | awk '{print $1}')
+          MAC_SHA=$(sha256sum mac/bootstrap.sh   | awk '{print $1}')
+          echo "WIN_SHA=$WIN_SHA" >> $GITHUB_OUTPUT
+          echo "MAC_SHA=$MAC_SHA" >> $GITHUB_OUTPUT
+
+      - name: Update README.md hashes
+        run: |
+          WIN_SHA='${{ steps.sha.outputs.WIN_SHA }}'
+          MAC_SHA='${{ steps.sha.outputs.MAC_SHA }}'
+
+          # Windows ワンライナー内の $h='...'; を置換（PASTE_SHA256_HERE または既存64桁HEXを対象）
+          perl -i -0777 -pe "s/(\$h=')([0-9A-Fa-f]{64}|PASTE_SHA256_HERE)(')/\${1}$WIN_SHA\${3}/g" README.md
+
+          # macOS ワンライナー内の H=... を置換（PASTE_SHA256_HERE または既存64桁HEXを対象）
+          perl -i -0777 -pe "s/(H=)([0-9A-Fa-f]{64}|PASTE_SHA256_HERE)/\${1}$MAC_SHA/g" README.md
+
+      - name: Commit changes if any
+        run: |
+          if ! git diff --quiet -- README.md; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "ci: update one-liner SHA-256"
+            git push
+          else
+            echo "No changes to commit."
+          fi

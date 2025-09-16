@@ -1,0 +1,9 @@
+tap "homebrew/cask"
+
+cask "google-chrome"
+cask "firefox"
+cask "discord"
+cask "chatgpt"
+cask "claude"
+cask "zoom"
+cask "libreoffice"

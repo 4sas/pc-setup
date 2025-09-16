@@ -1,0 +1,4 @@
+cask "thunderbird"
+cask "slack"
+cask "smartsvn"
+brew "subversion"

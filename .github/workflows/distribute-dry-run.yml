@@ -1,0 +1,89 @@
+name: Distribute dry-run (resolve check)
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: distribute-dry-run
+  cancel-in-progress: true
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Brewfile resolve check
+        shell: bash
+        run: |
+          set -euo pipefail
+          check_file() {
+            local file="$1"
+            echo "[macOS] checking: $file"
+            # 出現順を保持しつつ、種類と名前を抽出（brew/cask）
+            awk 'BEGIN{FS="\""} /^brew /{print "brew", $2} /^cask /{print "cask", $2}' "$file" | while read kind name; do
+              if [ "$kind" = "cask" ]; then
+                brew info --cask "$name" >/dev/null
+              else
+                brew info "$name" >/dev/null 2>&1 || brew info "$name" >/dev/null
+              fi
+            done
+          }
+          check_file mac/Brewfile
+          if [ -d mac/roles ]; then
+            find mac/roles -type f -name Brewfile -print0 | xargs -0 -I{} bash -c 'check_file "$0"' {}
+          fi
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: winget is available
+        run: winget --version
+
+      - name: packages.json resolve check
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $wingetFiles = @("win\packages.json") + (Get-ChildItem -Recurse "win\roles" -Filter "packages.json" -ErrorAction SilentlyContinue | ForEach-Object FullName)
+          $msstoreFiles = @("win\packages.msstore.json") + (Get-ChildItem -Recurse "win\roles" -Filter "packages.msstore.json" -ErrorAction SilentlyContinue | ForEach-Object FullName)
+
+          $failed = $false
+
+          foreach ($f in $wingetFiles) {
+            Write-Host "[Windows/winget] checking: $f"
+            $json = Get-Content $f -Raw | ConvertFrom-Json
+            foreach ($src in $json.Sources) {
+              foreach ($pkg in $src.Packages) {
+                $id = $pkg.PackageIdentifier
+                Write-Host "  winget show --id $id --exact --source winget"
+                winget show --id $id --exact --accept-source-agreements --source winget | Out-Null
+                if ($LASTEXITCODE -ne 0) { Write-Error "Not found: $id"; $failed = $true }
+              }
+            }
+          }
+
+          foreach ($f in $msstoreFiles) {
+            if (-not (Test-Path $f)) { continue }
+            Write-Host "[Windows/msstore] checking: $f"
+            $json = Get-Content $f -Raw | ConvertFrom-Json
+            foreach ($src in $json.Sources) {
+              foreach ($pkg in $src.Packages) {
+                $id = $pkg.PackageIdentifier
+                Write-Host "  winget show --id $id --exact --source msstore"
+                winget show --id $id --exact --accept-source-agreements --source msstore | Out-Null
+                if ($LASTEXITCODE -ne 0) { Write-Error "Not found (msstore): $id"; $failed = $true }
+              }
+            }
+          }
+
+          if ($failed) { throw "Some packages were not resolvable." }

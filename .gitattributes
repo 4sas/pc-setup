@@ -1,0 +1,20 @@
+# $ find ./Assets -name '*.cs' | xargs file | grep CRLF | awk -F: '{print $1}' | xargs dos2unix
+*.bat text eol=crlf
+*.cginc text eol=lf
+*.cnf text eol=lf
+*.cs text eol=lf
+*.css text eol=lf
+*.groovy text eol=lf
+*.html text eol=lf
+*.java text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.php text eol=lf
+*.py text eol=lf
+*.scss text eol=lf
+*.sh text eol=lf
+*.shader text eol=lf
+*.sql text eol=lf
+*.txt text eol=lf
+*.yml text eol=lf
+Dockerfile text eol=lf
