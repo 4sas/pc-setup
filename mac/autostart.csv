@@ -1,0 +1,7 @@
+# Label,Type,Target,Args,KeepAlive
+# Type=app なら Target は “アプリ名”（open -a 経由）/ Type=cmd なら 実行ファイルのフルパス
+# Args は空または半角スペース区切り（複雑な引数は JSON を利用）
+,app,Karabiner-Elements,,
+,app,Scroll Reverser,,
+# 例）コマンド起動（KeepAlive=true）
+com.pc-setup.login.mycli,cmd,/usr/local/bin/mycli,--serve --port 7777,true

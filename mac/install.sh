@@ -118,23 +118,121 @@ process_csv() { # local_csv_path
   [ -f "$csv" ] || return 0
   # ヘッダを除外し、空行/コメントを除く
   tail -n +2 "$csv" | sed 's/\r$//' | sed '/^\s*#/d;/^\s*$/d' | \
-  while IFS=',' read -r url sha args; do
-    url="${url//[[:space:]]/}"; sha="${sha//[[:space:]]/}"
-    [ -n "$url" ] || continue
-    if grep -Fxq "$url" "$VENDOR_MARKER"; then
-      echo "Skip (already installed): $url"
-      continue
-    fi
-    tmp="/tmp/vendor.$$.pkg"
-    case "$url" in
-      *.dmg) tmp="/tmp/vendor.$$.dmg" ;;
-      *.pkg|*.mpkg) tmp="/tmp/vendor.$$.pkg" ;;
-      *) tmp="/tmp/vendor.$$.bin" ;;
-    esac
-    download_and_verify "$url" "$sha" "$tmp"
-    install_pkg_or_dmg "$tmp" ${args:-}
-    echo "$url" | sudo tee -a "$VENDOR_MARKER" >/dev/null
+  while IFS=',' read -r label type target args keepalive; do
+    label="$(echo "${label:-}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+    type="$(echo "${type:-}"   | tr '[:upper:]' '[:lower:]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+    target="$(echo "${target:-}"| sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+    args="$(echo "${args:-}"   | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+    keepalive="$(echo "${keepalive:-}" | tr '[:upper:]' '[:lower:]')"
+
+    [ -n "$type" ] || continue
+    [ -n "$target" ] || continue
+
+    ensure_login_agent_from_spec "$label" "$type" "$target" "$args" "$keepalive"
   done
+}
+
+process_json_if_available() { # local_json_path
+  local jf="$1"
+  [ -f "$jf" ] || return 0
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "WARN: jq not found; skip JSON: $jf"
+    return 0
+  fi
+  # 各エントリを TSV で流し、後段で分解
+  jq -r '.[] | [
+      (.label // ""),
+      (has("app") and (.app|length>0) ? "app" : "cmd"),
+      (.app // .cmd // ""),
+      ((.args // []) | join(" ")),
+      ((.keepAlive // false) | tostring)
+    ] | @tsv' "$jf" | \
+  while IFS=$'\t' read -r label type target args keepalive; do
+    ensure_login_agent_from_spec "$label" "$type" "$target" "$args" "$keepalive"
+  done
+}
+
+slugify() { # string -> slug
+  printf '%s' "$1" \
+    | tr '[:upper:]' '[:lower:]' \
+    | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g'
+}
+
+bool_true() { # returns 0 if truthy else 1
+  case "${1:-}" in
+    1|true|yes|on) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# LaunchAgent 生成ロード
+ensure_login_agent() { # label keepAlive program_and_args...
+  local label="$1"; shift
+  local keep="$1"; shift
+  local dir="$HOME/Library/LaunchAgents"
+  local plist="$dir/${label}.plist"
+  mkdir -p "$dir"
+
+  # ProgramArguments を plist として生成
+  {
+    cat <<'XML_HEAD'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+XML_HEAD
+    printf "    <key>Label</key><string>%s</string>\n" "$label"
+    echo "    <key>ProgramArguments</key>"
+    echo "    <array>"
+    for arg in "$@"; do
+      printf '      <string>%s</string>\n' "$arg"
+    done
+    echo "    </array>"
+    echo "    <key>RunAtLoad</key><true/>"
+    if bool_true "$keep"; then
+      echo "    <key>KeepAlive</key><true/>"
+    else
+      echo "    <key>KeepAlive</key><false/>"
+    fi
+    cat <<'XML_TAIL'
+  </dict>
+</plist>
+XML_TAIL
+  } > "$plist"
+
+  # 再登録（冪等・両系統対応）
+  if launchctl print "gui/$UID/${label}" >/dev/null 2>&1; then
+    launchctl bootout "gui/$UID" "$plist" >/dev/null 2>&1 || launchctl unload -w "$plist" >/dev/null 2>&1 || true
+  fi
+  launchctl bootstrap "gui/$UID" "$plist" >/dev/null 2>&1 || launchctl load -w "$plist" >/dev/null 2>&1 || true
+  launchctl enable "gui/$UID/${label}" >/dev/null 2>&1 || true
+
+  echo "AutoLaunch enabled: label=${label}"
+}
+
+ensure_login_agent_from_spec() { # label type target args keepalive
+  local label="$1" type="$2" target="$3" args="$4" keep="$5"
+  if [ -z "$label" ]; then
+    label="com.pc-setup.login.$(slugify "$target")"
+  fi
+
+  case "$type" in
+    app)
+      # open -a "AppName" [args...]
+      # args はスペース区切り（単純形）。複雑な引数は JSON を利用。
+      local argv=(/usr/bin/open -a "$target")
+      for a in $args; do argv+=("$a"); done
+      ensure_login_agent "$label" "$keep" "${argv[@]}"
+      ;;
+    cmd)
+      local argv=("$target")
+      for a in $args; do argv+=("$a"); done
+      ensure_login_agent "$label" "$keep" "${argv[@]}"
+      ;;
+    *)
+      echo "WARN: unknown Type='$type' for target='$target' (skip)"
+      ;;
+  esac
 }
 
 # 共通/役割 vendors.csv を順に適用
@@ -159,5 +257,15 @@ if [ -n "${INTERNET_SHARING_PASSWORD:-}" ]; then
   retry curl -fsSL "$BASE/internet-sharing.sh" -o /tmp/internet-sharing.sh
   sudo bash /tmp/internet-sharing.sh "$INTERNET_SHARING_PASSWORD" || echo "WARN: internet-sharing failed"
 fi
+
+# --- 起動時自動起動 ---
+any_autostart=0
+# CSV: 共通→役割
+for cfg in "$BASE/autostart.csv" "$BASE/roles/$ROLE/autostart.csv"; do
+  tmp="/tmp/autostart.$$.csv"
+  if curl -fsSL "$cfg" -o "$tmp"; then
+    process_csv "$tmp" && any_autostart=1
+  fi
+done
 
 echo "macOS セットアップ完了（Role=$ROLE）"

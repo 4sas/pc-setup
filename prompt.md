@@ -1,6 +1,6 @@
 # 指示
 
-* macに「Karabiner-Elements」「Scroll Reverser」をインストールする記述を追加
+* macにおいて「Karabiner-Elements」「Scroll Reverser」がMac起動時に自動起動する設定を追加
 
 ## 前提条件
 
@@ -61,21 +61,21 @@ pc-setup/
 共通のみ：
 
 ```powershell
-$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
+$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='a2eca427a69c7b146e1cb467dedca29ae7c29bd1fd6886927d7bea70b55b8b67';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; powershell -ExecutionPolicy Bypass -File $f
 ```
 
 役割（engineer）を追加：
 
 ```powershell
-$env:ROLE='engineer'; $env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
+$env:ROLE='engineer'; $env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='a2eca427a69c7b146e1cb467dedca29ae7c29bd1fd6886927d7bea70b55b8b67';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; powershell -ExecutionPolicy Bypass -File $f
 ```
 
 複数ロール（例：engineer と designer を順に適用）：
 
 ```powershell
-$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='8d099a1aa5973902c723b17c99bffad37a90fdc7e6c8174c1b35b55ebaa5bbe8';
+$env:DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; $u='https://raw.githubusercontent.com/4sas/pc-setup/main/win/bootstrap.ps1'; $f="$env:TEMP\bootstrap.ps1"; $h='a2eca427a69c7b146e1cb467dedca29ae7c29bd1fd6886927d7bea70b55b8b67';
 iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Write-Error 'Hash mismatch'; exit 1}; @('engineer','designer')|%{ $env:ROLE=$_; powershell -ExecutionPolicy Bypass -File $f }
 ```
 
@@ -84,21 +84,21 @@ iwr -useb $u -OutFile $f; if((Get-FileHash $f -Algorithm SHA256).Hash -ne $h){Wr
 共通のみ：
 
 ```bash
-DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=0c1f62f9fbeba90f4e6bbfa574e39da6ea11c1d296d7cf5148c53bd3ce7cc6ea
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && bash "$F"
 ```
 
 役割（engineer）を追加：
 
 ```bash
-ROLE=engineer DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+ROLE=engineer DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=0c1f62f9fbeba90f4e6bbfa574e39da6ea11c1d296d7cf5148c53bd3ce7cc6ea
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && bash "$F"
 ```
 
 複数ロール（例：engineer と designer を順に適用）：
 
 ```bash
-DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=7f95f29e81bf04f1dbf49f5b8da156e12fc06f3a27a2083947a800506f007199
+DISCORD_WEBHOOK='https://discordapp.com/api/webhooks/1417340783249592452/X5NfCARV9fnlv5S62XrD-Bi3v6a_lmgHzJ5a_-AsVWkj6NH6VI37bjyXC69afPv_v3NQ'; INTERNET_SHARING_PASSWORD='@pply3252Wifi'; U=https://raw.githubusercontent.com/4sas/pc-setup/main/mac/bootstrap.sh; F=/tmp/bootstrap.sh; H=0c1f62f9fbeba90f4e6bbfa574e39da6ea11c1d296d7cf5148c53bd3ce7cc6ea
 curl -fsSL "$U" -o "$F" && [ "$(shasum -a 256 "$F" | awk '{print $1}')" = "$H" ] && for r in engineer designer; do ROLE="$r" bash "$F"; done
 ```
 
@@ -463,10 +463,29 @@ bash /tmp/install.sh "$ROLE"
 set -euo pipefail
 
 ROLE="${1:-default}"
+LOG_DIR="/var/log/pc-setup"
 
 BASE="https://raw.githubusercontent.com/4sas/pc-setup/main/mac"
 TMP_COMMON="/tmp/BREWFILE.common.$$"
 TMP_ROLE="/tmp/BREWFILE.role.$$"
+
+# 失敗時のみ Discord 通知（ログ添付、なければメッセージのみ）
+notify_discord_on_error() {
+  local rc="${1:-0}"
+  [ -z "${DISCORD_WEBHOOK:-}" ] && return 0
+  [ "$rc" -eq 0 ] && return 0
+  local host; host="$(hostname -s)"
+  local content="[FAILURE(${rc})] pc-setup macOS install.sh role=${ROLE} host=${host} (see ${LOG_DIR}/setup.log)"
+  if [ -r "${LOG_DIR}/setup.log" ]; then
+    curl -fsS -X POST \
+      -F "content=${content}" \
+      -F "file=@${LOG_DIR}/setup.log;filename=setup.log" \
+      "$DISCORD_WEBHOOK" || true
+  else
+    curl -fsS -X POST -F "content=${content}" "$DISCORD_WEBHOOK" || true
+  fi
+}
+trap 'rc=$?; notify_discord_on_error "$rc"' EXIT
 
 # リトライ（指数バックオフ）
 RETRY_MAX="${RETRY_MAX:-5}"
@@ -733,8 +752,6 @@ echo "Internet Sharing: ${SRC_SERVICE_NAME} → Wi-Fi (${SSID}) を起動しま�
 ## [mac/Brewfile](./mac/Brewfile)
 
 ~~~brewfile
-tap "homebrew/cask"
-
 cask "google-chrome"
 cask "firefox"
 cask "discord"
@@ -742,6 +759,8 @@ cask "chatgpt"
 cask "claude"
 cask "zoom"
 cask "libreoffice"
+cask "karabiner-elements"
+cask "scroll-reverser"
 ~~~
 
 ## [mac/vendors.csv](./mac/vendors.csv)
@@ -860,6 +879,36 @@ exit $code
 ~~~powershell
 param([string]$Role='default')
 
+# すべてのエラーを例外として扱う
+$ErrorActionPreference = 'Stop'
+
+function Send-DiscordError {
+  param(
+    [string]$Message,
+    [string]$LogPath = "$env:ProgramData\pc-setup\setup.log"
+  )
+  if (-not $env:DISCORD_WEBHOOK) { return }
+  try {
+    if ($LogPath -and (Test-Path $LogPath)) {
+      # 添付あり（multipart/form-data）
+      $client   = New-Object System.Net.Http.HttpClient
+      $content  = New-Object System.Net.Http.MultipartFormDataContent
+      $txt      = New-Object System.Net.Http.StringContent($Message, [System.Text.Encoding]::UTF8)
+      $stream   = [System.IO.File]::OpenRead($LogPath)
+      $filePart = New-Object System.Net.Http.StreamContent($stream)
+      $filePart.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::Parse("text/plain")
+      $null = $content.Add($txt, "content")
+      $null = $content.Add($filePart, "file", "setup.log")
+      $resp = $client.PostAsync($env:DISCORD_WEBHOOK, $content).GetAwaiter().GetResult()
+      $stream.Dispose(); $client.Dispose()
+    } else {
+      # 本文のみ（application/json）
+      $body = @{ content = $Message } | ConvertTo-Json -Compress
+      Invoke-RestMethod -Method Post -Uri $env:DISCORD_WEBHOOK -ContentType 'application/json' -Body $body | Out-Null
+    }
+  } catch { }
+}
+
 function Invoke-WithRetry {
   param([scriptblock]$Script,[int]$Max = 5,[int]$BaseSeconds = 1)
   if ($env:RETRY_MAX) { $Max = [int]$env:RETRY_MAX }
@@ -873,109 +922,130 @@ function Invoke-WithRetry {
     }
   }
 }
-function Invoke-ExternalWithRetry { param([string]$File,[string[]]$Args)
-  Invoke-WithRetry { & $File @Args; if ($LASTEXITCODE -ne 0) { throw "$File failed with exit code $LASTEXITCODE" } }
+function Invoke-ExternalWithRetry {
+  param([string]$File,[string[]]$Args)
+  Invoke-WithRetry {
+    & $File @Args
+    if ($LASTEXITCODE -ne 0) { throw "$File failed with exit code $LASTEXITCODE" }
+  }
 }
 
-# winget 確認
-if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-  Write-Error "winget（App Installer）が必要です。Microsoft Store から 'App Installer' を導入してください。"
+try {
+  # winget 確認
+  if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    throw "winget（App Installer）が必要です。Microsoft Store から 'App Installer' を導入してください。"
+  }
+
+  # 取得先
+  $raw='https://raw.githubusercontent.com/4sas/pc-setup/main/win'
+  $temp=$env:TEMP
+
+  # 共通 / 役割 packages.json 取得
+  Invoke-WithRetry { Invoke-WebRequest "$raw/packages.json" -OutFile "$temp\packages.json" -ErrorAction Stop }
+  $roleJsonUrl = "$raw/roles/$Role/packages.json"
+  try { Invoke-WithRetry { Invoke-WebRequest $roleJsonUrl -OutFile "$temp\role_packages.json" -ErrorAction Stop }; $hasRole=$true } catch { $hasRole=$false }
+  $msCommonUrl = "$raw/packages.msstore.json"
+  try { Invoke-WithRetry { Invoke-WebRequest $msCommonUrl -OutFile "$temp\packages.msstore.json" -ErrorAction Stop }; $hasMsCommon=$true } catch { $hasMsCommon=$false }
+  $msRoleUrl = "$raw/roles/$Role/packages.msstore.json"
+  try { Invoke-WithRetry { Invoke-WebRequest $msRoleUrl -OutFile "$temp\role_packages.msstore.json" -ErrorAction Stop }; $hasMsRole=$true } catch { $hasMsRole=$false }
+
+  # ソース更新 & 既存アップグレード
+  Invoke-ExternalWithRetry 'winget' @('source','update','--accept-source-agreements')
+  Invoke-ExternalWithRetry 'winget' @('upgrade','--all','--silent')
+
+  # winget import
+  Invoke-ExternalWithRetry 'winget' @('import','-i',"$temp\packages.json",'--accept-package-agreements','--accept-source-agreements','--silent','--ignore-versions')
+  if ($hasRole) {
+    Invoke-ExternalWithRetry 'winget' @('import','-i',"$temp\role_packages.json",'--accept-package-agreements','--accept-source-agreements','--silent','--ignore-versions')
+  }
+
+  # msstore 復旧（任意）
+  try {
+    $srcList = winget source list 2>$null
+    if (-not ($srcList -match '^\s*msstore\b')) {
+      Invoke-ExternalWithRetry 'winget' @('source','reset','--force','--accept-source-agreements')
+    }
+  } catch { }
+
+  # msstore import
+  if ($hasMsCommon) {
+    Invoke-ExternalWithRetry 'winget' @('import','-i',"$temp\packages.msstore.json",'--accept-package-agreements','--accept-source-agreements','--silent','--ignore-versions','--disable-interactivity')
+  }
+  if ($hasMsRole) {
+    Invoke-ExternalWithRetry 'winget' @('import','-i',"$temp\role_packages.msstore.json",'--accept-package-agreements','--accept-source-agreements','--silent','--ignore-versions','--disable-interactivity')
+  }
+
+  # ベンダー直リンク CSV の処理
+  $VendorMarker = "$env:ProgramData\pc-setup\vendor-installed.txt"
+  if (-not (Test-Path $VendorMarker)) { New-Item -ItemType File -Force -Path $VendorMarker | Out-Null }
+
+  function Get-Hash([string]$Path) { (Get-FileHash $Path -Algorithm SHA256).Hash.ToLower() }
+
+  function Install-VendorCsv([string]$CsvPath) {
+    if (-not (Test-Path $CsvPath)) { return }
+    $seen = @{}
+    # ヘッダ付き CSV（Url,Sha256,Args）前提。空行/コメントを除外して読み込み
+    $rows = Import-Csv -Path $CsvPath | Where-Object { $_.Url -and -not $_.Url.Trim().StartsWith('#') }
+    foreach ($row in $rows) {
+      $url = $row.Url.Trim()
+      if (-not $url) { continue }
+      if ($seen.ContainsKey($url)) { continue }
+      if (Select-String -Path $VendorMarker -Pattern ([regex]::Escape($url)) -Quiet) {
+        Write-Host "Skip (already installed): $url"
+        continue
+      }
+      $seen[$url] = $true
+
+      $file = Join-Path $temp ("vendor_{0}" -f ([IO.Path]::GetFileName($url)))
+      Invoke-WithRetry { Invoke-WebRequest $url -OutFile $file -UseBasicParsing -ErrorAction Stop }
+
+      $sha = ($row.Sha256 ?? '').ToString().ToLower()
+      if ($sha) {
+        $calc = Get-Hash $file
+        if ($calc -ne $sha) { throw "Checksum mismatch for $url`n expected: $sha`n actual  : $calc" }
+      }
+
+      $ext = [IO.Path]::GetExtension($file).ToLower()
+      $args = $row.Args
+      if ($ext -eq '.msi') {
+        $alist = "/i `"$file`""
+        if ($args) { $alist = "$alist $args" }
+        Start-Process -FilePath "msiexec.exe" -ArgumentList $alist -Wait -Verb RunAs
+      } else {
+        Start-Process -FilePath $file -ArgumentList $args -Wait -Verb RunAs
+      }
+
+      Add-Content -Path $VendorMarker -Value $url
+    }
+  }
+
+  # 共通/役割 vendors.csv を順に適用
+  $commonCsv = "$temp\vendors.csv"
+  $roleCsv   = "$temp\role_vendors.csv"
+  try { Invoke-WithRetry { Invoke-WebRequest "$raw/vendors.csv" -OutFile $commonCsv -UseBasicParsing -ErrorAction Stop } } catch { }
+  try { Invoke-WithRetry { Invoke-WebRequest "$raw/roles/$Role/vendors.csv" -OutFile $roleCsv -UseBasicParsing -ErrorAction Stop } } catch { }
+  Install-VendorCsv $commonCsv
+  Install-VendorCsv $roleCsv
+
+  # --- Sleep to 5 minutes (AC/DC) on current power scheme
+  foreach ($args in @(
+    @('/change','standby-timeout-ac','5'),
+    @('/change','standby-timeout-dc','5')
+  )) {
+    try {
+      Invoke-ExternalWithRetry 'powercfg' $args
+    } catch {
+      Write-Warning "Failed to set sleep timeout ($($args -join ' ')): $($_.Exception.Message)"
+    }
+  }
+
+  Write-Host "Windows セットアップ完了（Role=$Role）" -ForegroundColor Green
+} catch {
+  $host = $env:COMPUTERNAME
+  $msg  = "[FAILURE] pc-setup Windows install.ps1 role=$Role host=$host (see $env:ProgramData\pc-setup\setup.log)`n$($_.Exception.Message)"
+  Send-DiscordError -Message $msg
   exit 1
 }
-
-# 取得先
-$raw='https://raw.githubusercontent.com/4sas/pc-setup/main/win'
-$temp=$env:TEMP
-
-# 共通 / 役割 packages.json 取得
-Invoke-WithRetry { Invoke-WebRequest "$raw/packages.json" -OutFile "$temp\packages.json" -ErrorAction Stop }
-$roleJsonUrl = "$raw/roles/$Role/packages.json"
-try { Invoke-WithRetry { Invoke-WebRequest $roleJsonUrl -OutFile "$temp\role_packages.json" -ErrorAction Stop }; $hasRole=$true } catch { $hasRole=$false }
-$msCommonUrl = "$raw/packages.msstore.json"
-try { Invoke-WithRetry { Invoke-WebRequest $msCommonUrl -OutFile "$temp\packages.msstore.json" -ErrorAction Stop }; $hasMsCommon=$true } catch { $hasMsCommon=$false }
-$msRoleUrl = "$raw/roles/$Role/packages.msstore.json"
-try { Invoke-WithRetry { Invoke-WebRequest $msRoleUrl -OutFile "$temp\role_packages.msstore.json" -ErrorAction Stop }; $hasMsRole=$true } catch { $hasMsRole=$false }
-
-# ソース更新 & 既存アップグレード
-Invoke-ExternalWithRetry 'winget' @('source','update','--accept-source-agreements')
-Invoke-ExternalWithRetry 'winget' @('upgrade','--all','--silent')
-
-# winget import
-Invoke-ExternalWithRetry 'winget' @('import','-i',"$temp\packages.json",'--accept-package-agreements','--accept-source-agreements','--silent','--ignore-versions')
-if ($hasRole) { Invoke-ExternalWithRetry 'winget' @('import','-i',"$temp\role_packages.json",'--accept-package-agreements','--accept-source-agreements','--silent','--ignore-versions') }
-
-# msstore 復旧（任意）
-try { $srcList = winget source list 2>$null; if (-not ($srcList -match '^\s*msstore\b')) { Invoke-ExternalWithRetry 'winget' @('source','reset','--force','--accept-source-agreements') } } catch { }
-
-# msstore import
-if ($hasMsCommon) { Invoke-ExternalWithRetry 'winget' @('import','-i',"$temp\packages.msstore.json",'--accept-package-agreements','--accept-source-agreements','--silent','--ignore-versions','--disable-interactivity') }
-if ($hasMsRole)    { Invoke-ExternalWithRetry 'winget' @('import','-i',"$temp\role_packages.msstore.json",'--accept-package-agreements','--accept-source-agreements','--silent','--ignore-versions','--disable-interactivity') }
-
-# ベンダー直リンク CSV の処理
-$VendorMarker = "$env:ProgramData\pc-setup\vendor-installed.txt"
-if (-not (Test-Path $VendorMarker)) { New-Item -ItemType File -Force -Path $VendorMarker | Out-Null }
-
-function Get-Hash([string]$Path) { (Get-FileHash $Path -Algorithm SHA256).Hash.ToLower() }
-
-function Install-VendorCsv([string]$CsvPath) {
-  if (-not (Test-Path $CsvPath)) { return }
-  $seen = @{}
-  # ヘッダ付き CSV（Url,Sha256,Args）前提。空行/コメントを除外して読み込み
-  $rows = Import-Csv -Path $CsvPath | Where-Object { $_.Url -and -not $_.Url.Trim().StartsWith('#') }
-  foreach ($row in $rows) {
-    $url = $row.Url.Trim()
-    if (-not $url) { continue }
-    if ($seen.ContainsKey($url)) { continue }
-    if (Select-String -Path $VendorMarker -Pattern ([regex]::Escape($url)) -Quiet) {
-      Write-Host "Skip (already installed): $url"
-      continue
-    }
-    $seen[$url] = $true
-
-    $file = Join-Path $temp ("vendor_{0}" -f ([IO.Path]::GetFileName($url)))
-    Invoke-WithRetry { Invoke-WebRequest $url -OutFile $file -UseBasicParsing -ErrorAction Stop }
-
-    $sha = ($row.Sha256 ?? '').ToString().ToLower()
-    if ($sha) {
-      $calc = Get-Hash $file
-      if ($calc -ne $sha) { throw "Checksum mismatch for $url`n expected: $sha`n actual  : $calc" }
-    }
-
-    $ext = [IO.Path]::GetExtension($file).ToLower()
-    $args = $row.Args
-    if ($ext -eq '.msi') {
-      $alist = "/i `"$file`""
-      if ($args) { $alist = "$alist $args" }
-      Start-Process -FilePath "msiexec.exe" -ArgumentList $alist -Wait -Verb RunAs
-    } else {
-      Start-Process -FilePath $file -ArgumentList $args -Wait -Verb RunAs
-    }
-
-    Add-Content -Path $VendorMarker -Value $url
-  }
-}
-
-# 共通/役割 vendors.csv を順に適用
-$commonCsv = "$temp\vendors.csv"
-$roleCsv   = "$temp\role_vendors.csv"
-try { Invoke-WithRetry { Invoke-WebRequest "$raw/vendors.csv" -OutFile $commonCsv -UseBasicParsing -ErrorAction Stop } } catch { }
-try { Invoke-WithRetry { Invoke-WebRequest "$raw/roles/$Role/vendors.csv" -OutFile $roleCsv -UseBasicParsing -ErrorAction Stop } } catch { }
-Install-VendorCsv $commonCsv
-Install-VendorCsv $roleCsv
-
-# --- Sleep to 5 minutes (AC/DC) on current power scheme
-foreach ($args in @(
-  @('/change','standby-timeout-ac','5'),
-  @('/change','standby-timeout-dc','5')
-)) {
-  try {
-    Invoke-ExternalWithRetry 'powercfg' $args
-  } catch {
-    Write-Warning "Failed to set sleep timeout ($($args -join ' ')): $($_.Exception.Message)"
-  }
-}
-
-Write-Host "Windows セットアップ完了（Role=$Role）" -ForegroundColor Green
 ~~~
 
 ## [win/packages.json](./win/packages.json)
